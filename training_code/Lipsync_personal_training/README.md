@@ -1,4 +1,4 @@
-# Lipsync_training
+# Lipsync_personal_training
 
 ## Dataset setting
 We use **VoxCeleb2** dataset
