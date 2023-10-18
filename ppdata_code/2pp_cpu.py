@@ -1,10 +1,13 @@
-import os, glob, cv2, torch, time
+import argparse
+import glob
+import multiprocessing
+import os
+
+import cv2
 import numpy as np
 import parmap
-import multiprocessing
-import argparse
+from innerverz import DECA, FaceAligner
 from tqdm import tqdm
-from innerverz import FaceAligner, DECA
 
 FA_3D = FaceAligner(size=512, lmk_type="3D")
 DC = DECA(device="cpu")

@@ -1,9 +1,13 @@
-import os, glob, cv2, torch, time
-import numpy as np
-from tqdm import tqdm
 import argparse
-from torch.utils.data import Dataset, DataLoader
+import glob
+import os
+
+import cv2
+import numpy as np
+import torch
 from innerverz import DECA
+from torch.utils.data import DataLoader, Dataset
+from tqdm import tqdm
 
 DC = DECA(device="cuda")
 

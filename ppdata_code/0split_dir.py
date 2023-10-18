@@ -1,8 +1,7 @@
 ### for demo video
 ### make correct directory tree
-import cv2, os, glob
-from tqdm import tqdm
-
+import glob
+import os
 
 dataset_base_dir2 = "/ssd2t/DATASET/VoxCeleb2/demo_driving_video/512over"
 video_paths = sorted(glob.glob(os.path.join(dataset_base_dir2, "*.mp4")))  # 20

@@ -1,4 +1,3 @@
-import os
 import sys
 
 sys.path.append("./")
@@ -7,7 +6,6 @@ import warnings
 from distutils import dir_util
 
 import torch
-import wandb
 from core.model import MyModel
 from lib import utils
 
@@ -15,10 +13,8 @@ warnings.filterwarnings("ignore")
 from datetime import timedelta
 
 import cv2
-import numpy as np
 from accelerate import Accelerator, DistributedDataParallelKwargs
 from accelerate.utils import InitProcessGroupKwargs
-from PIL import Image
 
 
 def train():

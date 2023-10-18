@@ -1,13 +1,17 @@
-import glob, os, cv2, librosa, subprocess, torch, sys
-import numpy as np
-import python_speech_features
-import parmap
-import multiprocessing
 import argparse
+import glob
+import multiprocessing
+import os
+import subprocess
+import sys
+
+import cv2
+import librosa
+import numpy as np
+import parmap
+import python_speech_features
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from scipy.io import wavfile
-from transformers import HubertModel, Wav2Vec2FeatureExtractor
-from tqdm import tqdm
 
 sys.path.append("../")
 from utils.audio import get_mel
@@ -27,9 +31,8 @@ def pp_from_video(video_path, args):
     # save frames
     total_num = 0
     cap = cv2.VideoCapture(video_path)
-    video_fps = cap.get(cv2.CAP_PROP_FPS)
     while cap.isOpened():
-        ret, frame = cap.read(image=None)
+        _, frame = cap.read(image=None)
         if frame is None:
             break
         cv2.imwrite(f"{frame_save_dir}/%06d.png" % total_num, frame)
@@ -42,7 +45,7 @@ def pp_from_video(video_path, args):
         video_path,
         audio_path,
     )
-    output = subprocess.call(command, shell=True, stdout=None)
+    subprocess.call(command, shell=True, stdout=None)
 
     # no audio file exception
     if not os.path.isfile(audio_path):
@@ -61,7 +64,7 @@ def pp_from_video(video_path, args):
     origin_mel = get_mel(audio_path, args.sr).T
 
     # mfcc
-    mfcc_sr, mfcc_wav = wavfile.read(audio_path)
+    _, mfcc_wav = wavfile.read(audio_path)
     mfcc = zip(*python_speech_features.mfcc(mfcc_wav, args.sr))
     mfcc = np.stack([np.array(i) for i in mfcc])
 
@@ -72,8 +75,6 @@ def pp_from_video(video_path, args):
         crop_duration = min_duration
 
     v_start = 0
-    a_start_sample = int(v_start * args.sr)
-    a_end_sample = int((v_start + crop_duration) * args.sr)
     mel_start_idx = int(80.0 * v_start)  # 1sec -> 80
     mel_end_idx = int(mel_start_idx + 80 * crop_duration)  # 0.2sec 16 -> 10sec : 800
     mel = origin_mel[mel_start_idx:mel_end_idx, :]
